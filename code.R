@@ -20,13 +20,6 @@ posted_date <-
   html_nodes('time') %>% 
   html_text(trim = TRUE)
 
-# posted_date <- 
-#  file_html %>% 
-#  html_nodes('.c-byline__item span') %>% 
-#  html_text() 
-
-posted_date
-
 dates <- file_html %>% 
   html_nodes('time') %>% 
   html_attrs() %>% 
@@ -35,29 +28,17 @@ dates <- file_html %>%
   ymd_hms() %>%                 
   unlist()
 
-
-author <- 
-  file_html %>% 
-  html_nodes('.c-byline__author-name') %>% 
-  html_text()
-author
-
-
 author <- 
   file_html %>% 
   html_nodes('.c-byline__item') %>% 
   html_text(trim = TRUE) 
-author
 
+authors <- c()
 
+for(x in seq(1,length(author),3)) {
+  authors <- c(authors, author[x]) 
+}
 
-
-
-author <- 
-  file_html %>% 
-  html_nodes('.c-byline__item') %>% 
-  .[[2]] %>% 
-  html_text() 
 
 
 results <- file_html %>% html_nodes('.c-byline__item')
