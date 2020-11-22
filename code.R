@@ -15,18 +15,24 @@ headings <-
   html_text()
 headings
 
+post_links <- 
+  file_html %>% 
+  html_nodes('.c-entry-box--compact__title') %>% 
+  html_nodes('a') %>%
+  html_attr('href')
+
 posted_date <- 
   file_html %>% 
   html_nodes('time') %>% 
   html_text(trim = TRUE)
 
-dates <- file_html %>% 
-  html_nodes('time') %>% 
-  html_attrs() %>% 
-  map(1) %>% 
-  # Parse the string into a datetime object with lubridate
-  ymd_hms() %>%                 
-  unlist()
+#dates <- file_html %>% 
+#  html_nodes('time') %>% 
+#  html_attrs() %>% 
+#  map(1) %>% 
+#  # Parse the string into a datetime object with lubridate
+#  ymd_hms() %>%                 
+#  unlist()
 
 author <- 
   file_html %>% 
@@ -39,6 +45,9 @@ for(x in seq(1,length(author),3)) {
   authors <- c(authors, author[x]) 
 }
 
+# to create a df
+df <- data.frame('headings' = headings, 'post_link' = post_links, 'date' = posted_date, 'author' = authors)  
+
 
 
 results <- file_html %>% html_nodes('.c-byline__item')
@@ -48,6 +57,7 @@ second_result %>% html_nodes("time")
 date <- second_result %>% html_nodes("time") %>% html_text(trim = TRUE)
 
 xml_contents(second_result)
+
 
 
 # alternative for trim = TRUE:
